@@ -1,0 +1,55 @@
+<!-- Modal Detail Makanan -->
+<div class="modal fade" id="foodDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-2xl overflow-hidden">
+            <div class="modal-body p-0">
+                <!-- Close Button -->
+                <button type="button" 
+                        class="absolute top-4 right-4 z-10 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                
+                <!-- Foto Makanan -->
+                <div class="relative h-64 bg-gray-200">
+                    <img id="modalFoto" 
+                         src="" 
+                         class="w-full h-full object-cover" 
+                         alt="Foto Makanan">
+                    <!-- Badge Type -->
+                    <div id="modalTypeBadge" class="absolute top-4 left-4 px-4 py-2 rounded-full text-white text-sm font-semibold shadow-lg">
+                        Edible
+                    </div>
+                </div>
+                
+                <!-- Detail Content -->
+                <div class="p-6">
+                    <!-- Nama Makanan -->
+                    <h3 id="modalNamaMakanan" class="text-2xl font-bold text-[#0D402D] mb-4">
+                        Nama Makanan
+                    </h3>
+                    
+                    <!-- Deskripsi -->
+                    <div class="mb-4">
+                        <h4 class="text-sm font-semibold text-gray-700 mb-2">Deskripsi</h4>
+                        <p id="modalDescription" class="text-gray-600 text-sm leading-relaxed">
+                            Deskripsi makanan akan ditampilkan di sini...
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Modal Footer -->
+                <div class="modal-footer border-t border-gray-200 px-6 py-4">
+                    <button type="button" 
+                            class="w-full bg-[#0D402D] hover:bg-[#0a3324] text-white font-semibold py-3 rounded-lg transition"
+                            data-bs-dismiss="modal">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

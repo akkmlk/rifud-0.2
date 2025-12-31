@@ -1,0 +1,240 @@
+{% extends 'layout/base_resto.html' %}
+{% block content %}
+
+<div id="riwayat-data" ></div>
+    <div class="bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+    <div class="p-4 flex items-center justify-between space-x-4">
+        <a class="self-center">
+        <span class="text-xl text-heading font-semibold whitespace-nowrap">Riwayat Pesanan</span>
+        </a>
+
+        <div class="flex items-center gap-3 flex-wrap">
+        <!-- Dropdown Jenis-->
+        <div class="relative inline-block">
+            <button id="dropdownJenisButton"
+                    data-dropdown-toggle="dropdownJenis"
+                    class="shrink-0 inline-flex items-center justify-center text-body bg-white box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-gray-300 shadow-xs font-medium leading-5 rounded-full text-sm px-3 py-2 focus:outline-none"
+                    type="button">
+            <svg class="w-4 h-4 me-1.5 -ms-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="24" height="24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"/></svg>
+            Jenis
+            <svg class="w-4 h-4 ms-1.5 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="24" height="24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
+            </button>
+
+            <div id="dropdownJenis" class="absolute right-0 mt-2 z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-lg shadow-lg w-40 max-h-64 overflow-auto">
+            <ul class="p-2 text-sm text-body font-medium" aria-labelledby="dropdownJenisButton">
+                <li><a href="#" data-type="" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">All</a></li>
+                <li><a href="#" data-type="Edible" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Edible</a></li>
+                <li><a href="#" data-type="Waste" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Waste</a></li>
+            </ul>
+            </div>
+        </div>
+
+        <!-- Dropdown Status -->
+        <div class="relative inline-block">
+            <button id="dropdownStatusButton"
+                    data-dropdown-toggle="dropdownStatus"
+                    class="shrink-0 inline-flex items-center justify-center text-body bg-white box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-gray-300 shadow-xs font-medium leading-5 rounded-full text-sm px-3 py-2 focus:outline-none"
+                    type="button">
+            <svg class="w-4 h-4 me-1.5 -ms-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="24" height="24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"/></svg>
+            Status
+            <svg class="w-4 h-4 ms-1.5 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="24" height="24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
+            </button>
+
+            <div id="dropdownStatus" class="absolute right-0 mt-2 z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-lg shadow-lg w-40 max-h-64 overflow-auto">
+            <ul class="p-2 text-sm text-body font-medium" aria-labelledby="dropdownStatusButton">
+                <li><a href="#" data-status="" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">All</a></li>
+                <li><a href="#" data-status="Success" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Success</a></li>
+                <li><a href="#" data-status="Declined" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Declined</a></li>
+            </ul>
+            </div>
+        </div>
+
+        
+        </div>
+    </div>
+
+    
+    <div class="relative overflow-x-auto">
+        <table class="w-full text-sm text-left rtl:text-right text-body border-collapse table-auto">
+        <thead class="text-white text-sm text-body bg-blend-darken border-b border-default-medium bg-primary">
+            <tr>
+            <th scope="col" class="px-3 py-3 rounded-s-base font-medium box-border align-middle">
+                <div class="flex items-center h-full">Id</div>
+            </th>
+            <th scope="col" class="px-3 py-3 w-20 font-medium box-border align-middle">
+                <div class="flex items-center h-full">Gambar</div>
+            </th>
+            <th scope="col" class="px-6 py-3 font-medium box-border align-middle">
+                <div class="flex items-center h-full">Jenis</div>
+            </th>
+            <th scope="col" class="px-6 py-3 font-medium box-border align-middle">
+                <div class="flex items-center h-full">Pembeli</div>
+            </th>
+            <th scope="col" class="px-6 py-3 font-medium box-border align-middle">
+                <div class="flex items-center h-full">Nama</div>
+            </th>
+            <th scope="col" class="px-6 py-3 font-medium box-border align-middle">
+                <div class="flex items-center h-full">Qty</div>
+            </th>
+            <th scope="col" class="px-6 py-3 font-medium box-border align-middle">
+                <div class="flex items-center h-full">Total Harga</div>
+            </th>
+            <th scope="col" class="px-6 py-3 font-medium box-border align-middle">
+                <div class="flex items-center h-full">Pembayaran</div>
+            </th>
+            <th scope="col" class="px-6 py-3 rounded-e-base font-medium box-border align-middle">
+                <div class="flex items-center h-full">Status</div>
+            </th>
+            </tr>
+        </thead>
+
+        <tbody class="mt-4" id="order-history-body">
+            <tr id="loading-row">
+            <td colspan="9" class="bg-[#d1d5dc] px-6 py-4 text-center text-[#6a7282] italic">Memuat...</td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+(function(){
+    const restoId = sessionStorage.getItem('user_id');
+    const tbody = document.getElementById('order-history-body');
+
+    if (!restoId) {
+        console.error('user_id tidak ditemukan di sessionStorage');
+        showMessage('Sesi login tidak ditemukan. Silakan login ulang.');
+        return;
+    }
+
+    let itemsCache = [];
+    let filterType = '';
+    let filterStatus = '';
+
+    function showMessage(msg, showRetry=false){
+        const retryHtml = showRetry ? '<div class="mt-2"><button id="retry-btn" class="text-sm text-white bg-primary px-3 py-1 rounded">Muat ulang</button></div>' : '';
+        tbody.innerHTML = `<tr><td colspan="9" class="bg-gray-300 px-6 py-4 text-center text-gray-500 italic">${msg}${retryHtml}</td></tr>`;
+
+        if(showRetry){
+        const btn = document.getElementById('retry-btn');
+        if(btn) btn.addEventListener('click', () => { loadHistory(); btn.disabled = true; setTimeout(()=>btn.disabled=false,1000); });
+        }
+    }
+
+    function renderRows(list){
+        const rows = list.map((d, idx) => {
+        const imageSrc = d.url_foto_fw;
+
+        const jenis = d.type || '';
+        const pembeli = d.pembeli || '';
+        const nama = d.fw_name || '';
+        const qty = d.qty ?? '';
+        const total = d.price_total ?? 0;
+        const payment = d.payment_type || '';
+        const status = d.status || '';
+
+        return `
+        <tr class="border-b border-default bg-gray-300">
+            <td class="px-3 py-3 font-semibold text-heading rounded-s-base box-border align-middle">${idx + 1}</td>
+            <td class="px-3 py-3 box-border align-middle">
+            <div class="inline-flex items-center justify-center">
+                <img class="w-14 h-14 object-cover rounded" src="${imageSrc}" alt="Gambar" onerror="this.onerror=null;this.src='/static/images/profile.png'">
+            </div>
+            </td>
+            <td class="px-6 py-3 font-semibold text-heading box-border align-middle">${jenis}</td>
+            <td class="px-6 py-3 font-semibold text-heading box-border align-middle">${pembeli}</td>
+            <td class="px-6 py-3 font-semibold text-heading box-border align-middle">${nama}</td>
+            <td class="px-6 py-3 font-semibold text-heading box-border align-middle">${qty}</td>
+            <td class="px-6 py-3 font-semibold text-heading box-border align-middle">Rp ${Number(total).toLocaleString('id-ID')}</td>
+            <td class="px-6 py-3 font-semibold text-heading box-border align-middle">${payment}</td>
+            <td class="px-6 py-3 font-semibold text-heading box-border align-middle">${status}</td>
+        </tr>`;
+        }).join('');
+
+        tbody.innerHTML = rows;
+    }
+
+    function applyFilters(){
+        const filtered = itemsCache.filter(d => {
+        const matchType = !filterType || (d.type && d.type.toLowerCase() === filterType.toLowerCase());
+        const matchStatus = !filterStatus || (d.status && d.status.toLowerCase() === filterStatus.toLowerCase());
+        return matchType && matchStatus;
+        });
+
+        if(filtered.length === 0){
+        showMessage('Tidak ada riwayat untuk filter ini');
+        return;
+        }
+
+        renderRows(filtered);
+    }
+
+    async function loadHistory(){
+        showMessage('Memuat...');
+
+        try{
+        const res = await fetch(`/api/order-history/${restoId}`, { headers: { 'Accept': 'application/json' } });
+
+        // read body text and try to parse JSON safely
+        let bodyText = null;
+        let body = null;
+        try{ bodyText = await res.text(); body = bodyText ? JSON.parse(bodyText) : null; } catch(e){ body = null; }
+
+        if(!res.ok){
+            const serverMsg = body && body.message ? body.message : `HTTP ${res.status}`;
+            console.error('Order history error:', res.status, serverMsg, bodyText || res.statusText);
+            // If 404 means no data, treat as empty
+            if(res.status === 404) { itemsCache = []; showMessage('Belum ada riwayat pesanan'); return; }
+            showMessage(`Terjadi kesalahan: ${serverMsg}`, true);
+            return;
+        }
+
+        const items = Array.isArray(body && body.data) ? body.data : [];
+        if(items.length === 0){
+            itemsCache = [];
+            showMessage('Belum ada riwayat pesanan');
+            return;
+        }
+
+        itemsCache = items;
+        applyFilters();
+
+        } catch(err){
+        console.error('Fetch failed:', err);
+        showMessage('Terjadi kesalahan jaringan. Periksa koneksi Anda.', true);
+        }
+    }
+
+    // attach filter handlers
+    function attachFilterHandlers(){
+        const jenisLinks = document.querySelectorAll('#dropdownJenis [data-type]');
+        jenisLinks.forEach(link => link.addEventListener('click', (e) => {
+        e.preventDefault();
+        filterType = link.dataset.type || '';
+        const label = filterType || 'Jenis';
+        document.getElementById('dropdownJenisButton').querySelector('span')?.remove?.();
+        // update button text (set innerHTML after icon)
+        const btn = document.getElementById('dropdownJenisButton');
+        btn.childNodes[2] && (btn.childNodes[2].textContent = ` ${label}`);
+        applyFilters();
+        }));
+
+        const statusLinks = document.querySelectorAll('#dropdownStatus [data-status]');
+        statusLinks.forEach(link => link.addEventListener('click', (e) => {
+        e.preventDefault();
+        filterStatus = link.dataset.status || '';
+        const label = filterStatus || 'Status';
+        const btn = document.getElementById('dropdownStatusButton');
+        btn.childNodes[2] && (btn.childNodes[2].textContent = ` ${label}`);
+        applyFilters();
+        }));
+    }
+
+    attachFilterHandlers();
+    // initial load
+    loadHistory();
+})();
+</script>
+
+{% endblock %}

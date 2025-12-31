@@ -1,0 +1,291 @@
+{% extends 'layout/base_resto.html' %}
+
+{% block content %}
+<!-- 4 cuma buat ngetest doang nanti di ganti {{ session.user_id }} -->
+<div id="data-user" data-user-id="4"></div>
+
+<div class="max-w-4xl mx-auto mt-8 bg-white p-6 border border-default rounded-base shadow-xs">
+    <div class="relative">
+        <h5 class="mb-3 text-2xl tracking-tight font-semibold text-heading">Add Food Waste</h5>
+        <a href="/daftar" 
+            class="absolute top-0 right-0 text-gray-400 hover:text-red-500 text-2xl font-bold">
+            &times;
+        </a>
+    </div>
+
+    <form id="addForm" enctype="multipart/form-data">
+        <!-- Foto Upload -->
+        <div class="w-full p-6 border border-default rounded-base shadow-xs mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+                Foto Makanan
+            </label>
+            
+            <!-- Preview gambar -->
+            <div id="imagePreview" class="mb-4 hidden">
+                <img id="previewImg" src="" alt="Preview" class="w-full h-56 object-cover rounded-2xl">
+            </div>
+
+            <label for="fotoInput"
+                class="flex flex-col items-center justify-center h-56
+                    border-2 border-dashed border-gray-300 rounded-2xl
+                    cursor-pointer hover:border-[#0D402D]
+                    transition text-gray-500">
+                <input type="file" id="fotoInput" name="foto" accept="image/*" class="hidden">
+                <svg class="w-11 h-11 text-fg-disabled" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="m3 16 5-7 6 6.5m6.5 2.5L16 13l-4.286 6M14 10h.01M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"/>
+                </svg>
+                <span class="text-sm">
+                    Drop foto di sini atau klik untuk upload
+                </span>
+                <span class="text-xs text-gray-400 mt-1">Format: JPG, PNG (Wajib)</span>
+            </label>
+        </div>
+
+        <!-- Nama Makanan -->
+        <div class="mb-4">
+            <label for="name" class="block mb-2.5 text-sm font-medium text-heading">Nama Makanan</label>
+            <input type="text" id="name" name="name" 
+                class="rounded-xl border-2 border-gray-300 text-heading text-sm focus:ring-[#0D402D] focus:border-[#0D402D] block w-full px-3 py-2.5 shadow-xs placeholder:text-body" 
+                placeholder="Nama Makanan" required />
+        </div>
+
+        <!-- Deskripsi -->
+        <div class="mb-4">
+            <label for="description" class="block mb-2.5 text-sm font-medium text-heading">Deskripsi</label>
+            <textarea id="description" name="description" rows="4"
+                class="border-2 border-gray-300 text-heading text-base rounded-xl focus:ring-[#0D402D] focus:border-[#0D402D] block w-full px-4 py-3 shadow-xs placeholder:text-body" 
+                placeholder="Keterangan mengenai food waste." required></textarea>
+        </div>
+
+        <!-- Row untuk Price, Type, dan Stock -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div>
+                <label for="price" class="block mb-2.5 text-sm font-medium text-heading">Harga Satuan</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-heading font-medium">Rp</span>
+                    <input type="number" id="price" name="price" 
+                        class="block w-full pl-10 pr-3 py-2.5 border-2 border-gray-300 text-heading text-sm rounded-xl focus:ring-[#0D402D] focus:border-[#0D402D] placeholder:text-body" 
+                        placeholder="0" min="0" required />
+                </div>
+            </div>
+
+            <div>
+                <label class="block mb-2.5 text-sm font-medium text-heading">Tipe Food Waste <span class="text-red-500">*</span></label>
+                
+                <div class="flex gap-3">
+                    <button type="button" id="type-waste-btn"
+                        class="cursor-pointer inline-flex items-center text-white font-medium leading-5 rounded-full text-sm px-3 py-1.5 transition-all duration-150 opacity-50 bg-[#2F6B52]">
+                        Waste
+                    </button>
+
+                    <button type="button" id="type-edible-btn"
+                        class="cursor-pointer inline-flex items-center text-white font-medium leading-5 rounded-full text-sm px-3 py-1.5 transition-all duration-150 opacity-50 bg-[#D4D95B]">
+                        Edible
+                    </button>
+                </div>
+                <input type="hidden" id="type" name="type" value="">
+            </div>
+
+            <div>
+                <label for="stock" class="block mb-2.5 text-sm font-medium text-heading">Stock Barang</label>
+                <div class="relative flex items-stretch">
+                    <button type="button" id="decrement-button"
+                        class="text-heading bg-white border-2 border-r-0 border-gray-300 hover:bg-gray-100 font-medium rounded-l-xl text-sm px-4 focus:outline-none focus:ring-2 focus:ring-[#0D402D] focus:z-10">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14"/>
+                        </svg>
+                    </button>
+                    <input type="number" id="stock" name="stock" min="0" max="9999"
+                        class="text-heading text-center flex-1 border-2 border-gray-300 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D402D] focus:z-20" 
+                        value="1" required />
+                    <button type="button" id="increment-button"
+                        class="text-heading bg-white border-2 border-l-0 border-gray-300 hover:bg-gray-100 font-medium rounded-r-xl text-sm px-4 focus:outline-none focus:ring-2 focus:ring-[#0D402D] focus:z-10">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" id="submitBtn"
+            class="w-full bg-[#0D402D] text-white py-3 rounded-2xl font-semibold hover:bg-[#0a3324] transition disabled:bg-gray-400 disabled:cursor-not-allowed">
+            Tambah Food Waste
+        </button>
+    </form>
+</div>
+
+<script>
+(function(){
+    const container = document.getElementById('data-user');
+    const userId = container ? container.dataset.userId : null;
+    
+    const form = document.getElementById('addForm');
+    const nameInput = document.getElementById('name');
+    const descInput = document.getElementById('description');
+    const priceInput = document.getElementById('price');
+    const stockInput = document.getElementById('stock');
+    const typeInput = document.getElementById('type');
+    const wasteBtn = document.getElementById('type-waste-btn');
+    const edibleBtn = document.getElementById('type-edible-btn');
+    const fotoInput = document.getElementById('fotoInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const previewContainer = document.getElementById('imagePreview');
+    const previewImg = document.getElementById('previewImg');
+
+    // Variable untuk tracking type yang dipilih
+    let selectedType = null;
+
+    // DEBUG: Cek user_id di console
+    console.log('User ID:', userId);
+
+    // Function untuk set type - mirip dengan edit.html
+    function setType(type) {
+        selectedType = type;
+        typeInput.value = type;
+        
+        console.log('Type selected:', type); // DEBUG
+        
+        if (type === 'Waste') {
+            // Aktifkan Waste, nonaktifkan Edible
+            wasteBtn.classList.remove('opacity-50');
+            wasteBtn.classList.add('opacity-100');
+            edibleBtn.classList.remove('opacity-100');
+            edibleBtn.classList.add('opacity-50');
+        } else if (type === 'Edible') {
+            // Aktifkan Edible, nonaktifkan Waste
+            edibleBtn.classList.remove('opacity-50');
+            edibleBtn.classList.add('opacity-100');
+            wasteBtn.classList.remove('opacity-100');
+            wasteBtn.classList.add('opacity-50');
+        }
+    }
+
+    // Event listeners untuk type buttons
+    wasteBtn.addEventListener('click', function(){
+        setType('Waste');
+    });
+
+    edibleBtn.addEventListener('click', function(){
+        setType('Edible');
+    });
+
+    // Stock Increment/Decrement - sama seperti edit.html
+    document.getElementById('increment-button').addEventListener('click', function(){
+        let val = parseInt(stockInput.value) || 0;
+        if(val < 9999) stockInput.value = val + 1;
+    });
+
+    document.getElementById('decrement-button').addEventListener('click', function(){
+        let val = parseInt(stockInput.value) || 0;
+        if(val > 0) stockInput.value = val - 1;
+    });
+
+    // Preview foto saat upload - sama seperti edit.html
+    fotoInput.addEventListener('change', function(e){
+        const file = e.target.files[0];
+        if(file){
+            const reader = new FileReader();
+            reader.onload = function(e){
+                previewImg.src = e.target.result;
+                previewContainer.classList.remove('hidden');
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Submit form
+    form.addEventListener('submit', async function(e){
+        e.preventDefault();
+
+        // Validasi type harus dipilih
+        if(!selectedType || !typeInput.value){
+            alert('Silakan pilih tipe food waste (Waste atau Edible)');
+            return;
+        }
+
+        // Validasi user_id
+        if(!userId){
+            alert('User ID tidak ditemukan. Silakan login terlebih dahulu.');
+            console.error('User ID is null or undefined');
+            return;
+        }
+
+        // Validasi field lainnya
+        if(!nameInput.value.trim()){
+            alert('Nama makanan wajib diisi');
+            return;
+        }
+
+        if(!descInput.value.trim()){
+            alert('Deskripsi wajib diisi');
+            return;
+        }
+
+        if(!priceInput.value || priceInput.value <= 0){
+            alert('Harga harus lebih dari 0');
+            return;
+        }
+
+        if(!stockInput.value || stockInput.value < 0){
+            alert('Stock tidak boleh negatif');
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Menambahkan...';
+
+        const formData = new FormData();
+        formData.append('name', nameInput.value.trim());
+        formData.append('description', descInput.value.trim());
+        formData.append('price', priceInput.value);
+        formData.append('stock', stockInput.value);
+        formData.append('type', typeInput.value);
+        formData.append('user_id', userId);
+
+        // Append foto jika ada
+        if(fotoInput.files[0]){
+            formData.append('foto', fotoInput.files[0]);
+            console.log('Foto uploaded:', fotoInput.files[0].name);
+        } else {
+            console.log('No foto uploaded');
+        }
+
+        // DEBUG: Log semua data yang akan dikirim
+        console.log('=== Data yang akan dikirim ===');
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+
+        try{
+            const res = await fetch('/api/food-waste/add', {
+                method: 'POST',
+                body: formData
+            });
+
+            const body = await res.json();
+
+            console.log('Response status:', res.status);
+            console.log('Response body:', body);
+
+            if(!res.ok){
+                alert(body.message || 'Gagal menambahkan food waste');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Tambah Food Waste';
+                return;
+            }
+
+            alert('Food waste berhasil ditambahkan!');
+            window.location.href = '/daftar';
+
+        } catch(err){
+            console.error('Add failed:', err);
+            alert('Terjadi kesalahan saat menambahkan food waste: ' + err.message);
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Tambah Food Waste';
+        }
+    });
+})();
+</script>
+
+{% endblock %}

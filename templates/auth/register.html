@@ -1,0 +1,66 @@
+{% extends 'layout/base_auth.html' %}
+
+
+{% block content %}
+<div class="w-full max-w-6xl min-h-[600px] bg-white rounded-xl overflow-hidden shadow-lg grid grid-cols-1 md:grid-cols-2 ">
+
+    <!-- LEFT : FORM -->
+    <div class="bg-primary p-12 text-white flex flex-col justify-center">
+    
+        <div class="flex items-center justify-between space-x-4 mb-10">
+            <h1 class="text-2xl font-extrabold">
+                <span class=""><img src="static\images\Group 6.png" alt="logo"></span>
+            </h1>
+            <div class="flex space-x-4">
+                <a href="/" class="text-sm text-white/80 hover:underline">Home</a>
+                <a href="/login" class="text-sm text-white/80 hover:underline">Login</a>
+                <a href="/register-resto" class="text-sm  text-white/80 hover:underline">Register Resto</a>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <h2 class="text-4xl font-bold mb-2">Selamat Datang</h2>
+        <p class="text-white/80 mb-8">Masukan data anda</p>
+
+        <!-- Form -->
+        <form class="space-y-4" id="registerForm">
+            
+            <input
+            id="name"
+            type="text"
+            placeholder="Nama Lengkap"
+            class="w-full rounded-full bg-white/10 border border-white/10 px-5 py-3 text-sm placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-accent"
+            >
+            <input
+            id="email"
+            type="email"
+            placeholder="email"
+            class="w-full rounded-full bg-white/10 border border-white/10 px-5 py-3 text-sm placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-accent"
+            >
+
+            <input
+            id="password"
+            type="password"
+            placeholder="password"
+            class="w-full rounded-full bg-white/10 border border-white/10 px-5 py-3 text-sm placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-accent"
+            >
+
+            <button
+            type="submit"
+            class="mt-4 inline-block rounded-full bg-accent text-primary font-semibold px-10 py-3 hover:bg-accent-soft transition">
+            Daftar
+            </button>
+        </form>
+    </div>
+
+        <!-- RIGHT : IMAGE -->
+        <div class="hidden md:block">
+            <img
+                src="/static/images/bg-1.png"
+                alt="Food Image"
+                class="w-full h-full object-cover"
+            >
+        </div>
+</div>
+<script src="{{ url_for('static', filename='js/auth/registerUser.js') }}"></script>
+{% endblock %}

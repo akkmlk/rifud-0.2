@@ -1,0 +1,278 @@
+{% extends 'layout/base_resto.html' %}
+
+{% block content %}
+
+<div id="data-edit" data-food-id="{{ food_id }}"></div>
+
+<div class="max-w-4xl mx-auto mt-8 bg-white p-6 border border-default rounded-base shadow-xs">
+    <div class="relative">
+        <h5 class="mb-3 text-2xl tracking-tight font-semibold text-heading">Edit Food Waste</h5>
+        <a href="/daftar" 
+            class="absolute top-0 right-0 text-gray-400 hover:text-red-500 text-2xl font-bold">
+            &times;
+        </a>
+    </div>
+
+    <form id="editForm" enctype="multipart/form-data">
+        <!-- Foto Upload -->
+        <div class="w-full p-6 border border-default rounded-base shadow-xs mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+                Foto Makanan
+            </label>
+            
+            <!-- Preview gambar existing -->
+            <div id="imagePreview" class="mb-4 hidden">
+                <img id="previewImg" src="" alt="Preview" class="w-full h-56 object-cover rounded-2xl">
+            </div>
+
+            <label for="fotoInput"
+                class="flex flex-col items-center justify-center h-56
+                    border-2 border-dashed border-gray-300 rounded-2xl
+                    cursor-pointer hover:border-[#0D402D]
+                    transition text-gray-500">
+                <input type="file" id="fotoInput" name="foto" accept="image/*" class="hidden">
+                <svg class="w-11 h-11 text-fg-disabled" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="m3 16 5-7 6 6.5m6.5 2.5L16 13l-4.286 6M14 10h.01M4 19h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"/>
+                </svg>
+                <span class="text-sm">
+                    Drop foto di sini atau klik untuk upload
+                </span>
+                <span class="text-xs text-gray-400 mt-1">(Kosongkan jika tidak ingin mengubah foto)</span>
+            </label>
+        </div>
+
+        <!-- Nama Makanan -->
+        <div class="mb-4">
+            <label for="name" class="block mb-2.5 text-sm font-medium text-heading">Nama Makanan</label>
+            <input type="text" id="name" name="name" 
+                class="rounded-xl border-2 border-gray-300 text-heading text-sm focus:ring-[#0D402D] focus:border-[#0D402D] block w-full px-3 py-2.5 shadow-xs placeholder:text-body" 
+                placeholder="Nama Makanan" required />
+        </div>
+
+        <!-- Deskripsi -->
+        <div class="mb-4">
+            <label for="description" class="block mb-2.5 text-sm font-medium text-heading">Deskripsi</label>
+            <textarea id="description" name="description" rows="4"
+                class="border-2 border-gray-300 text-heading text-base rounded-xl focus:ring-[#0D402D] focus:border-[#0D402D] block w-full px-4 py-3 shadow-xs placeholder:text-body" 
+                placeholder="Keterangan mengenai food waste." required></textarea>
+        </div>
+
+        <!-- Row untuk Price, Type, dan Stock -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div>
+                <label for="price" class="block mb-2.5 text-sm font-medium text-heading">Harga Satuan</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-heading font-medium">Rp</span>
+                    <input type="number" id="price" name="price" 
+                        class="block w-full pl-10 pr-3 py-2.5 border-2 border-gray-300 text-heading text-sm rounded-xl focus:ring-[#0D402D] focus:border-[#0D402D] placeholder:text-body" 
+                        placeholder="0" required />
+                </div>
+            </div>
+
+            <div>
+                <label class="block mb-2.5 text-sm font-medium text-heading">Tipe Food Waste</label>
+                <button type="button" id="typeButton"
+                    class="w-full py-2.5 px-4 rounded-xl border-2 bg-[#2F6B52] text-white border-[#2F6B52] font-medium text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[#0D402D]">
+                    Waste
+                </button>
+                <input type="hidden" id="type" name="type" value="Waste">
+            </div>
+
+            <div>
+                <label for="stock" class="block mb-2.5 text-sm font-medium text-heading">Stock Barang</label>
+                <div class="relative flex items-stretch">
+                    <button type="button" id="decrement-button"
+                        class="text-heading bg-white border-2 border-r-0 border-gray-300 hover:bg-gray-100 font-medium rounded-l-xl text-sm px-4 focus:outline-none focus:ring-2 focus:ring-[#0D402D] focus:z-10">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14"/>
+                        </svg>
+                    </button>
+                    <input type="number" id="stock" name="stock" min="0" max="9999"
+                        class="text-heading text-center flex-1 border-2 border-gray-300 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D402D] focus:z-20" 
+                        value="1" required />
+                    <button type="button" id="increment-button"
+                        class="text-heading bg-white border-2 border-l-0 border-gray-300 hover:bg-gray-100 font-medium rounded-r-xl text-sm px-4 focus:outline-none focus:ring-2 focus:ring-[#0D402D] focus:z-10">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" id="submitBtn"
+            class="w-full bg-[#0D402D] text-white py-3 rounded-2xl font-semibold hover:bg-[#0a3324] transition disabled:bg-gray-400 disabled:cursor-not-allowed">
+            Save Changes
+        </button>
+    </form>
+</div>
+
+<script>
+(function(){
+    const container = document.getElementById('data-edit');
+    const foodId = container ? container.dataset.foodId : null;
+    
+    const form = document.getElementById('editForm');
+    const nameInput = document.getElementById('name');
+    const descInput = document.getElementById('description');
+    const priceInput = document.getElementById('price');
+    const stockInput = document.getElementById('stock');
+    const typeButton = document.getElementById('typeButton');
+    const typeInput = document.getElementById('type');
+    const fotoInput = document.getElementById('fotoInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const previewContainer = document.getElementById('imagePreview');
+    const previewImg = document.getElementById('previewImg');
+
+    // Variable untuk tracking status type
+    let isEdible = false;
+
+    // Function sederhana untuk set type
+    function setType(edible) {
+        isEdible = edible;
+        
+        if (isEdible) {
+            // Edible = Kuning
+            typeButton.textContent = 'Edible';
+            typeButton.className = 'w-full py-2.5 px-4 rounded-xl border-2 bg-[#D4D925] text-white border-[#D4D925] font-medium text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[#0D402D]';
+            typeInput.value = 'Edible';
+        } else {
+            // Waste = Hijau
+            typeButton.textContent = 'Waste';
+            typeButton.className = 'w-full py-2.5 px-4 rounded-xl border-2 bg-[#2F6B52] text-white border-[#2F6B52] font-medium text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[#0D402D]';
+            typeInput.value = 'Waste';
+        }
+    }
+
+    // Toggle type button - sederhana
+    typeButton.addEventListener('click', function(){
+        setType(!isEdible);
+    });
+
+    // Stock Increment/Decrement
+    document.getElementById('increment-button').addEventListener('click', function(){
+        let val = parseInt(stockInput.value) || 0;
+        if(val < 9999) stockInput.value = val + 1;
+    });
+
+    document.getElementById('decrement-button').addEventListener('click', function(){
+        let val = parseInt(stockInput.value) || 0;
+        if(val > 0) stockInput.value = val - 1;
+    });
+
+    // Preview foto saat upload
+    fotoInput.addEventListener('change', function(e){
+        const file = e.target.files[0];
+        if(file){
+            const reader = new FileReader();
+            reader.onload = function(e){
+                previewImg.src = e.target.result;
+                previewContainer.classList.remove('hidden');
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Load existing data
+    async function loadFoodWaste(){
+        if(!foodId){
+            alert('ID Food Waste tidak ditemukan');
+            window.location.href = '/daftar';
+            return;
+        }
+
+        try{
+            const res = await fetch(`/api/food-waste/one/${foodId}`, {
+                headers: { 'Accept': 'application/json' }
+            });
+
+            const body = await res.json();
+
+            if(!res.ok){
+                alert(body.message || 'Gagal memuat data');
+                window.location.href = '/daftar';
+                return;
+            }
+
+            const data = body.data;
+            
+            // Fill form with existing data
+            nameInput.value = data.name || '';
+            descInput.value = data.description || '';
+            priceInput.value = data.price || 0;
+            stockInput.value = data.stock || 0;
+
+            // Set type - cek string dari API (case insensitive)
+            const typeFromApi = (data.type || 'waste').toLowerCase();
+            if (typeFromApi === 'edible') {
+                setType(true);  // Set ke Edible
+            } else {
+                setType(false); // Set ke Waste
+            }
+
+            // Show existing image
+            if(data.foto){
+                previewImg.src = `/static/${data.foto}`;
+                previewContainer.classList.remove('hidden');
+            }
+
+        } catch(err){
+            console.error('Load failed:', err);
+            alert('Terjadi kesalahan saat memuat data');
+            window.location.href = '/daftar';
+        }
+    }
+
+    // Submit form
+    form.addEventListener('submit', async function(e){
+        e.preventDefault();
+
+        if(!confirm('Apakah Anda yakin ingin menyimpan perubahan?')) return;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Menyimpan...';
+
+        const formData = new FormData();
+        formData.append('name', nameInput.value);
+        formData.append('description', descInput.value);
+        formData.append('price', priceInput.value);
+        formData.append('stock', stockInput.value);
+        formData.append('type', typeInput.value);
+
+        // Only append foto if user selected a new file
+        if(fotoInput.files[0]){
+            formData.append('foto', fotoInput.files[0]);
+        }
+
+        try{
+            const res = await fetch(`/api/food-waste/update/${foodId}`, {
+                method: 'PUT',
+                body: formData
+            });
+
+            const body = await res.json();
+
+            if(!res.ok){
+                alert(body.message || 'Gagal mengupdate data');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Save Changes';
+                return;
+            }
+
+            alert('Data berhasil diupdate!');
+            window.location.href = '/daftar';
+
+        } catch(err){
+            console.error('Update failed:', err);
+            alert('Terjadi kesalahan saat mengupdate data');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Save Changes';
+        }
+    });
+
+    // Initialize
+    loadFoodWaste();
+})();
+</script>
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% macro orderHistoryCard( logo, images, namaResto, order, date, status, foodname, desc, total) %}
+<div class="mt-4 w-full max-w-sm p-6 border border-bold rounded-base shadow-xs">
+  <div class="flow-root">
+    <div class="flex items-center gap-3">
+      <td class="px-6 py-3 box-border align-middle">
+        <div class="inline-flex items-center justify-center">
+          <img class="w-14 h-14 object-cover rounded" src="{{ logo }}" alt="Tambahkan Gambar">
+        </div>
+      </td>
+      <div class="flex-1 min-w-0 ms-2">
+          <p class="font-medium text-heading truncate">
+              {{namaResto}}
+          </p>
+          <p class="text-sm text-body truncate">
+              {{order}}
+          </p>
+          <p class="text-sm text-body truncate">
+              {{date}}
+          </p>
+      </div>
+      <div class="inline-flex items-center font-medium px-2 py-1 text-heading rounded bg-accent">
+          {{status}}
+      </div>
+    </div>
+    <div>
+      <h1 class="font-medium leading-tight line-clamp-2 overflow-hidden">
+        {{foodname}}
+      </h1>
+      <p class="text-sm -mt-1 mb-2 text-body line-clamp-3 overflow-hidden">
+        {{desc}}
+      </p>
+    </div>
+    <td class="px-6 py-3 box-border align-middle">
+        <div class="inline-flex items-center justify-center">
+          <img class="rounded"src="{{ images }}" alt="Tambahkan Gambar">
+        </div>
+      </td>
+    <div class="mt-4 flex items-center justify-between text-sm">
+      <div class="flex items-center gap-2">
+          <span class="text-body">Total Harga</span>
+      </div>
+      <p class="font-medium text-fg-danger hover:underline">{{total}}</p>
+    </div>
+    <div class="mt-4 flex justify-end">
+      <button type="button" class="bg-gray-400 hover:bg-gray-200 focus:ring-4 focus:ring-gray-300 shadow-xs font-medium leading-5 rounded text-sm px-2 py-1 focus:outline-none">
+        Invoice
+      </button>
+    </div>
+  </div>
+</div>
+
+{% endmacro %}

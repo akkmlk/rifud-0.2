@@ -1,0 +1,38 @@
+<nav class="bg-primary border-default">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <a href="" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <img src="static\images\Group 6.png" class="h-7" alt="rifud logo" />
+            <span class="self-center text-xl text-heading font-semibold whitespace-nowrap"></span>
+        </a>
+        <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-body rounded-base md:hidden bg-accent hover:bg-neutral-secondary-soft hover:text-heading focus:outline-none focus:ring-2 focus:ring-neutral-tertiary" aria-controls="navbar-default" aria-expanded="false">
+            <span class="sr-only">Open main menu</span>
+            <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"/></svg>
+        </button>
+        <button
+            id="btnProfile"
+            type="button"
+            class="hidden md:flex items-center text-sm"
+            data-dropdown-toggle="user-dropdown"
+            data-dropdown-placement="bottom"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-10 h-10 text-accent" viewBox="0 0 640 640"><path d="M463 448.2C440.9 409.8 399.4 384 352 384L288 384C240.6 384 199.1 409.8 177 448.2C212.2 487.4 263.2 512 320 512C376.8 512 427.8 487.3 463 448.2zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320zM320 336C359.8 336 392 303.8 392 264C392 224.2 359.8 192 320 192C280.2 192 248 224.2 248 264C248 303.8 280.2 336 320 336z"/></svg>
+        </button>
+        <!-- Dropdown menu -->
+        <div class="z-50 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44" id="user-dropdown">
+            <div class="px-4 py-3 text-sm border-b border-default">
+            <span class="block text-heading font-medium">Halooo</span>
+            <span class="block text-body truncate" id="name">{{ session.get('name') }}</span>
+            </div>
+            <ul class="p-2 text-sm text-body font-medium" aria-labelledby="user-menu-button">
+            <li>
+                <a href="/profile" class="text-body inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Profile</a>
+            </li>
+            </li>
+            <li>
+                <button id="btnLogout" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Logout</button>
+            </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<script src="{{ url_for('static', filename='js/navbar.js') }}"></script>

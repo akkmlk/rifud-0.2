@@ -1,0 +1,43 @@
+{% macro historyCard(nama,date,status,desc,price,img) %}
+<div class="max-w-md mx-auto bg-green-50 border-4 border-green-800 rounded-lg p-4 shadow-sm">
+    <!-- Header -->
+    <div class="flex justify-between items-start mb-4">
+        <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-[url(/static/images/bg-2.png)] bg-cover rounded flex items-center justify-center">
+                <span class="text-gray-600 font-bold"></span>
+            </div>
+            <div>
+                <h2 class="font-bold text-lg">{{nama}}</h2>
+                <p class="text-sm text-gray-600"> order #ORD-</p>
+                <p class="text-xs text-gray-500">{{date}}</p>
+            </div>
+        </div>
+        <span class="px-3 py-1 bg-primary text-yellow-400 rounded text-sm font-medium">{{status}}</span>
+    </div>
+
+    <!-- About Item -->
+    <div class="mb-4">
+        <h3 class="font-bold text-md mb-1">about item</h3>
+        <p class="text-sm text-gray-700 leading-relaxed">
+            {{desc}}
+        </p>
+    </div>
+
+    <!-- Image Placeholder -->
+    <img src="{{ url_for('static', filename='images/' ~ img) }}" alt="gambar makanan" class="w-full h-30  bg-cover rounded mb-4" ></img  >
+
+    <!-- Total -->
+    <div class="flex justify-between items-center mb-4">
+        <span class="font-bold text-lg">Total</span>
+        <span class="font-bold text-lg">Rp{{price}}</span>
+    </div>
+
+    <!-- Invoice Button -->
+    <div class="text-right">
+        <button  class="px-4 py-1 bg-yellow-400 text-primary rounded text-sm font-medium hover:bg-yellow-400/90 transition">
+            <a href="/login" target="" rel="noopener noreferrer">Invoice</a>
+        </button>
+    </div>
+</div>
+
+{% endmacro %}

@@ -1,0 +1,47 @@
+{% extends 'layout/base_resto.html' %}
+
+{% block content %}
+<div class="container mx-auto px-6 py-6">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-[#0D402D]">Pesanan</h1>
+        <div class="flex gap-2">
+            <select class="px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 text-sm">
+                <option>jenis</option>
+                <option>edible</option>
+                <option>waste</option>
+            </select>
+            <select class="px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 text-sm">
+                <option>status</option>
+                <option>success</option>
+                <option>waiting</option>
+                <option>canceled</option>
+            </select>
+            <button class="px-4 py-2 bg-yellow-400 text-gray-800 rounded-lg font-medium text-sm hover:bg-yellow-500 transition-colors">
+                Show
+            </button>
+            <a href="/tambah" class="px-4 py-2 bg-yellow-400 text-gray-800 rounded-lg font-medium text-sm hover:bg-yellow-500 transition-colors flex items-center gap-2">
+                Add
+            </a>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto">
+       <div class="hidden md:grid grid-cols-9 bg-[#D4D925] text-[#0a3324] font-semibold rounded-t-2xl p-2 gap-4">
+            <div class="pl-8 py-3 text-left">
+                <input type="checkbox" id="selectAll" class="w-4 h-4 cursor-pointer">
+            </div>
+            <div class="py-3 text-left font-semibold">Id</div>
+            <div class="py-3 text-left font-semibold">Gambar</div>
+            <div class="px-4 py-3 text-left font-semibold">Jenis</div>
+            <div class="px-4 py-3 text-left font-semibold">Nama</div>
+            <div class="px-4 py-3 text-left font-semibold">Harga</div>
+            <div class="px-4 py-3 text-left font-semibold">Stock</div>
+            <div class="px-4 py-3 text-left font-semibold">Status</div>
+            <div class="px-4 py-3 text-left font-semibold">Action</div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends 'layout/base_user.html' %}
+{% block content %}
+
+<section class="m-2">
+    <div class="flex flex-col space-y-20 items-center ms-10 justify-center">
+        <h1 class="text-primary font-bold text-5xl">
+            Orderan saya
+        </h1>
+        
+    </div>
+    
+
+    <div id="orderanAnda"  class="grid grid-cols-1 md:grid-cols-3 gap-20 m-10 ">
+        
+        
+            
+
+        
+    </div>
+    <script>
+        async function fetchTransactionHistory(userId) {
+            try {
+                // Ambil data JSON dari endpoint asli
+                const response = await fetch(`/api/your-order/${userId}`);
+                const json = await response.json();
+
+                if (json.status === 'success' && json.data) {
+                renderTransactionHistory(json.data);
+                } else {
+                console.error("Gagal mengambil data transaksi:", json);
+                document.getElementById('orderanAnda').innerHTML = '<p>Data tidak ditemukan.</p>';
+                }
+            } catch (error) {
+                console.error("Error fetching transaction history:", error);
+                document.getElementById('orderanAnda').innerHTML = '<p>Terjadi kesalahan saat mengambil data.</p>';
+            }
+        }
+        function formatRupiah(number) {
+        return 'Rp ' + number.toLocaleString('id-ID');
+    }
+        function renderTransactionHistory(transactions) {
+            const listElement = document.getElementById('orderanAnda');
+            listElement.innerHTML = '';
+
+            if (!transactions || transactions.length === 0) {
+                listElement.innerHTML = '<p>Tidak ada riwayat transaksi.</p>';
+                return;
+            }
+
+            transactions.slice(0,6).forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'w-100 mx-auto  bg-white border-2 border-green-800 rounded-lg p-4 shadow-sm';
+                
+                const showInvoiceBtn = item.status === 'pending';
+                card.innerHTML = `
+                <!-- Header -->
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded flex items-center justify-center">
+                        <img src="http://127.0.0.1:5000/static/images/bg-1.png" 
+                            alt="gambar makanan" 
+                            class="w-13 h-13 bg-cover rounded">
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-lg">${item.name || 'Nama Item'}</h2>
+                        <p class="text-sm text-gray-600"> order #ORD-${item.id_transaction || '0'}</p> 
+                        <p class="text-xs text-gray-500">${item.transaction_date || 'Tanggal tidak tersedia'}</p>
+                    </div>
+                    </div>
+                    <span class="px-3 py-1 bg-primary text-yellow-400 rounded text-sm font-medium">
+                    ${item.status || 'Tidak Diketahui'}
+                    </span>
+                </div>
+
+                <!-- About Item -->
+                <div class="mb-4 flex flex-col max-w-md">
+                    <h3 class="font-bold text-md mb-1 ">${item.name || 'Nama Item'}</h3>
+                    <p class="text-sm text-gray-700 leading-relaxed ">
+                    ${item.description || 'Deskripsi tidak tersedia'}
+                    </p>
+                </div>
+
+                <!-- Image -->
+                <img src="${item.url_foto_fw}" 
+                    alt="gambar makanan" 
+                    class="w-full h-30 bg-cover rounded mb-4">
+
+                <!-- Total -->
+                <div class="flex justify-between items-center mb-4">
+                    <span class="font-bold text-lg">Total</span>
+                    <span class="font-bold text-lg">${formatRupiah(item.price_total) || '0'}</span>
+                </div>
+
+                ${showInvoiceBtn ? `
+                <!-- Invoice Button -->
+                <div class="text-right">
+                    <a 
+                        href="/invoice?id=${item.id_transaction}"
+                        class="inline-block px-4 py-1 bg-yellow-400 text-primary rounded text-sm font-medium hover:bg-yellow-400/90 transition"
+                    >
+                        Invoice
+                    </a>
+                </div>
+                ` : ''}
+                `;
+
+                listElement.appendChild(card);
+            });
+        }
+
+        // Contoh: Ambil data untuk user dengan ID 9
+        document.addEventListener("DOMContentLoaded", () => {
+        fetchTransactionHistory(sessionStorage.getItem('user_id'));
+        });
+    </script>
+</section>
+{% endblock %}

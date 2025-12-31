@@ -1,0 +1,60 @@
+{% macro loginCard(name,button,route,text) %}
+<div class="w-full max-w-6xl min-h-[600px] bg-white rounded-xl overflow-hidden shadow-lg grid grid-cols-1 md:grid-cols-2 ">
+
+    <!-- LEFT : FORM -->
+    <div class="bg-primary p-12 text-white flex flex-col justify-center">
+      
+      <!-- Header -->
+      <div class="flex items-center justify-between space-x-4 mb-10">
+        <h1 class="text-2xl font-extrabold">
+          <span class=""><img src="static\images\Group 6.png" alt="logo"></span>
+        </h1>
+        <div class="flex space-x-4">
+          <a href="/" class="text-sm text-white/80 hover:underline">Home</a>
+          <a href="{{route}}" class="text-sm  text-white/80 hover:underline">{{name}}</a>
+          <a href="/register-resto" class="text-sm  text-white/80 hover:underline">Register Resto</a>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <h2 class="text-4xl font-bold mb-2">{{text}}</h2>
+      <p class="text-white/80 mb-8">lorem ipsum dolor sit amet</p>
+
+      <!-- Form -->
+      <form class="space-y-4" id="loginForm">
+        
+        <input
+          type="email"
+          placeholder="email"
+          id="email"
+          class="w-full rounded-full bg-white/10 border border-white/10 px-5 py-3 text-sm placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-accent"
+        >
+
+        <input
+          type="password"
+          id="password"
+          placeholder="password"
+          class="w-full rounded-full bg-white/10 border border-white/10 px-5 py-3 text-sm placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-accent"
+        >
+
+        <button
+          type="submit"
+          id="btnSubmit"
+          class="mt-4 inline-block rounded-full bg-accent text-primary font-semibold px-10 py-3 hover:bg-accent-soft transition">
+          {{button}}
+        </button>
+      </form>
+    </div>
+
+    <!-- RIGHT : IMAGE -->
+    <div class="hidden md:block">
+      <img
+        src="/static/images/bg-1.png"
+        alt="Food Image"
+        class="w-full h-full object-cover"
+      >
+    </div>
+
+  </div>
+  <script src="{{ url_for('static', filename='js/auth/login.js') }}"></script>
+{% endmacro %}

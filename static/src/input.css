@@ -1,0 +1,37 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
+@source "../../node_modules/flowbite";
+
+
+@layer utilities {
+  @keyframes bg-carousel {
+    0%, 33% {
+      background-image: url("/static/images/bg-1.png");
+    }
+    34%, 66% {
+      background-image: url("/static/images/bg-2.png");
+    }
+    67%, 100% {
+      background-image: url("/static/images/bg-3.png");
+    }
+  }
+
+  .animate-bg-carousel {
+    animation: bg-carousel 15s infinite;
+  }
+}
+
+
+
+
+
+@theme {
+    --color-primary: #0D402D;
+    --color-secondary: #A58A55;
+    --color-accent: #D4D925;
+    --color-accent-soft: #D4D95B;
+    --color-background: #F2E1D1;
+    --color-ijo: #0000;
+}

@@ -1,0 +1,12 @@
+{% extends 'layout/base_auth.html' %}
+{% from "components/login_card.html" import loginCard %}
+
+{% block content %}
+{{ loginCard(
+        "Register",
+        "Masuk",
+        "/register",
+        "ayo masuk"
+    ) }}
+
+{% endblock %}

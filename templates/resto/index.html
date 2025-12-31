@@ -1,0 +1,283 @@
+{% extends 'layout/base_resto.html' %}
+{% block content %}
+
+<div id="data-produk" data-resto-id="{{ session.get('id') or session.get('user_id') or 4 }}"></div>
+<div class="bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+    <div class="p-4 flex items-center justify-between space-x-4">
+        <a class="self-center">
+            <span class="text-xl text-heading font-semibold whitespace-nowrap">Daftar Produk</span>
+        </a>
+
+        <div class="flex items-center gap-3 flex-wrap">
+            <!-- Dropdown Jenis-->
+            <div class="relative inline-block">
+                <button id="dropdownJenisButton"
+                        data-dropdown-toggle="dropdownJenis"
+                        class="shrink-0 inline-flex items-center justify-center text-body bg-white box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-gray-300 shadow-xs font-medium leading-5 rounded-full text-sm px-3 py-2 focus:outline-none"
+                        type="button">
+                    <svg class="w-4 h-4 me-1.5 -ms-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="24" height="24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"/></svg>
+                    Jenis
+                    <svg class="w-4 h-4 ms-1.5 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="24" height="24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
+                </button>
+
+                <div id="dropdownJenis" class="absolute right-0 mt-2 z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-lg shadow-lg w-40 max-h-64 overflow-auto">
+                    <ul class="p-2 text-sm text-body font-medium" aria-labelledby="dropdownJenisButton">
+                        <li><a href="#" data-type="" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">All</a></li>
+                        <li><a href="#" data-type="Edible" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Edible</a></li>
+                        <li><a href="#" data-type="Waste" class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded">Waste</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <a href="/tambah" 
+                    type="button"
+                    class="inline-flex items-center gap-3 text-white bg-[#D4D925] box-border border border-transparent
+                        hover:bg-[#D4D95B] font-medium leading-5 rounded-full
+                        text-sm px-4 py-2.5 focus:outline-none"
+                    aria-label="Tambah">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="3"
+                        stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 8v8M8 12h8"
+                        stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round"/>
+                </svg>
+                Add
+            </a>
+        </div>
+    </div>
+
+    <div class="relative overflow-x-auto">
+        <table class="w-full text-sm text-left rtl:text-right text-body border-collapse table-auto">
+            <thead class="text-white text-sm text-body bg-blend-darken border-b border-default-medium bg-primary">
+                <tr>
+                    <th scope="col" class="px-6 py-3 rounded-s-base font-medium box-border align-middle">
+                        <div class="flex items-center h-full">No</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3 w-20 font-medium box-border align-middle">
+                        <div class="flex items-center h-full">Gambar</div>
+                    </th>
+                    <th scope="col" class="px-3 py-3 font-medium box-border align-middle">
+                        <div class="flex items-center h-full">Jenis</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3 font-medium box-border align-middle">
+                        <div class="flex items-center h-full">Nama Produk</div>
+                    </th>
+                    <th scope="col" class="px-3 py-3 font-medium box-border align-middle">
+                        <div class="flex items-center h-full">Deskripsi</div>
+                    </th>
+                    <th scope="col" class="px-3 py-3 font-medium box-border align-middle">
+                        <div class="flex items-center h-full">Harga Satuan</div>
+                    </th>
+                    <th scope="col" class="px-3 py-3 font-medium box-border align-middle">
+                        <div class="flex items-center h-full">Stok</div>
+                    </th>
+                    <th scope="col" class="px-6 py-3 rounded-e-base font-medium box-border align-middle">
+                        <div class="flex items-center h-full">Aksi</div>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody class="mt-4" id="food-waste-body">
+                <tr id="loading-row">
+                    <td colspan="8" class="bg-[#d1d5dc] px-6 py-4 text-center text-[#6a7282] italic">Memuat...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+(function(){
+    const container = document.getElementById('data-produk');
+    const restoId = container ? container.dataset.restoId : null;
+    const tbody = document.getElementById('food-waste-body');
+
+    let itemsCache = [];
+    let filterType = '';
+
+    function showMessage(msg, showRetry=false){
+        const retryHtml = showRetry ? '<div class="mt-2"><button id="retry-btn" class="text-sm text-white bg-primary px-3 py-1 rounded">Muat ulang</button></div>' : '';
+        tbody.innerHTML = `<tr><td colspan="8" class="bg-gray-300 px-6 py-4 text-center text-gray-500 italic">${msg}${retryHtml}</td></tr>`;
+
+        if(showRetry){
+            const btn = document.getElementById('retry-btn');
+            if(btn) btn.addEventListener('click', () => { loadProducts(); btn.disabled = true; setTimeout(()=>btn.disabled=false,1000); });
+        }
+    }
+
+    function renderRows(list){
+        const rows = list.map((d, idx) => {
+            // Sesuaikan dengan data dari API food_waste
+            const id = d.id || '';
+            const foto = d.foto ? `/static/${d.foto}` : '/static/images/profile.png';
+            const jenis = d.type || '';
+            const nama = d.name || '';
+            const deskripsi = d.description || '';
+            const harga = d.price ?? 0;
+            const stok = d.stock ?? 0;
+
+            return `
+            <tr class="border-b border-default bg-gray-300">
+                <td class="px-6 py-3 font-semibold text-heading rounded-s-base box-border align-middle">${idx + 1}</td>
+                <td class="px-6 py-3 box-border align-middle">
+                    <div class="inline-flex items-center justify-center">
+                        <img class="w-14 h-14 object-cover rounded" src="${foto}" alt="Gambar" onerror="this.onerror=null;this.src='/static/images/profile.png'">
+                    </div>
+                </td>
+                <td class="px-3 py-3 font-semibold text-heading box-border align-middle">${jenis}</td>
+                <td class="px-6 py-3 font-semibold text-heading box-border align-middle">${nama}</td>
+                <td class="px-3 py-3 text-heading box-border align-middle">
+                    <div class="max-w-xs truncate" title="${deskripsi}">${deskripsi}</div>
+                </td>
+                <td class="px-3 py-3 font-semibold text-heading box-border align-middle">Rp ${Number(harga).toLocaleString('id-ID')}</td>
+                <td class="px-3 py-3 font-semibold text-heading box-border align-middle">${stok}</td>
+                <td class="px-6 py-3 font-semibold text-heading rounded-e-base box-border align-middle">
+                    <div class="inline-flex rounded-base shadow-xs gap-2" role="group">
+                        <a href="/edit/${id}" class="inline-flex items-center text-body bg-blue-500 border border-default hover:bg-blue-600 hover:text-white focus:ring-3 focus:ring-blue-300 font-medium leading-5 rounded-base text-sm px-3 py-2 focus:outline-none text-white">
+                            <svg class="w-4 h-4 me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                            Edit
+                        </a>
+                        <button type="button" onclick="deleteProduct(${id})" class="inline-flex items-center justify-center text-body bg-red-500 border border-default hover:bg-red-600 hover:text-white focus:ring-3 focus:ring-red-300 font-medium leading-5 rounded-base text-sm px-3 py-2 focus:outline-none text-white">
+                            <svg class="w-4 h-4 me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            Hapus
+                        </button>
+                    </div>    
+                </td>
+            </tr>`;
+        }).join('');
+
+        tbody.innerHTML = rows || '<tr><td colspan="8" class="bg-gray-300 px-6 py-4 text-center text-gray-500 italic">Tidak ada data produk</td></tr>';
+    }
+
+    function applyFilters(){
+        const filtered = itemsCache.filter(d => {
+            const matchType = !filterType || (d.type && d.type.toLowerCase() === filterType.toLowerCase());
+            return matchType;
+        });
+
+        if(filtered.length === 0){
+            showMessage('Tidak ada produk untuk filter ini');
+            return;
+        }
+
+        renderRows(filtered);
+    }
+
+    async function loadProducts(){
+        if(!restoId){
+            showMessage('ID Resto tidak ditemukan');
+            return;
+        }
+
+        showMessage('Memuat...');
+
+        try{
+            const res = await fetch(`/api/food-waste/${restoId}`, { 
+                headers: { 'Accept': 'application/json' } 
+            });
+
+            let bodyText = null;
+            let body = null;
+            try{ 
+                bodyText = await res.text(); 
+                body = bodyText ? JSON.parse(bodyText) : null; 
+            } catch(e){ 
+                body = null; 
+            }
+
+            if(!res.ok){
+                const serverMsg = body && body.message ? body.message : `HTTP ${res.status}`;
+                console.error('Load produk error:', res.status, serverMsg, bodyText || res.statusText);
+                
+                if(res.status === 404) { 
+                    itemsCache = []; 
+                    showMessage('Belum ada produk'); 
+                    return; 
+                }
+                showMessage(`Terjadi kesalahan: ${serverMsg}`, true);
+                return;
+            }
+
+            const items = Array.isArray(body && body.data) ? body.data : [];
+            if(items.length === 0){
+                itemsCache = [];
+                showMessage('Belum ada produk');
+                return;
+            }
+
+            itemsCache = items;
+            applyFilters();
+
+        } catch(err){
+            console.error('Fetch failed:', err);
+            showMessage('Terjadi kesalahan jaringan. Periksa koneksi Anda.', true);
+        }
+    }
+
+    // Delete function
+    window.deleteProduct = async function(id){
+        if(!confirm('Apakah Anda yakin ingin menghapus produk ini?')) return;
+
+        try{
+            const res = await fetch(`/api/food-waste/delete/${id}`, {
+                method: 'DELETE',
+                headers: { 'Accept': 'application/json' }
+            });
+
+            const body = await res.json();
+
+            if(!res.ok){
+                alert(body.message || 'Gagal menghapus produk');
+                return;
+            }
+
+            alert('Produk berhasil dihapus');
+            loadProducts(); // Reload data
+        } catch(err){
+            console.error('Delete failed:', err);
+            alert('Terjadi kesalahan saat menghapus produk');
+        }
+    }
+
+    // Attach filter handlers
+    function attachFilterHandlers(){
+        const jenisLinks = document.querySelectorAll('#dropdownJenis [data-type]');
+        jenisLinks.forEach(link => link.addEventListener('click', (e) => {
+            e.preventDefault();
+            filterType = link.dataset.type || '';
+            const label = filterType || 'Jenis';
+            
+            // Update button text
+            const btn = document.getElementById('dropdownJenisButton');
+            const textNode = Array.from(btn.childNodes).find(n => n.nodeType === 3 && n.textContent.trim());
+            if(textNode) textNode.textContent = ` ${label} `;
+            
+            applyFilters();
+            
+            // Close dropdown
+            document.getElementById('dropdownJenis').classList.add('hidden');
+        }));
+
+        // Toggle dropdown
+        document.getElementById('dropdownJenisButton').addEventListener('click', function(){
+            document.getElementById('dropdownJenis').classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e){
+            const dropdown = document.getElementById('dropdownJenis');
+            const button = document.getElementById('dropdownJenisButton');
+            if(!dropdown.contains(e.target) && !button.contains(e.target)){
+                dropdown.classList.add('hidden');
+            }
+        });
+    }
+
+    attachFilterHandlers();
+    loadProducts(); // Initial load
+})();
+</script>
+
+{% endblock %}

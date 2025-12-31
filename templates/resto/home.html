@@ -1,0 +1,58 @@
+{% extends 'layout/base_resto.html' %}
+{% block content %}
+<div class="max-w-7xl mx-auto bg-white rounded-lg shadow-lg p-8 font-[Montserrat]">
+    <div class="bg-gradient-to-r from-[#0D402D] to-[#165a42] rounded-lg p-16 mb-12 shadow-md">
+        <h1 class="text-5xl font-bold text-white">Welcome</h1>
+        <p class="text-white/80 mt-2">lorem ipsum dolor sir amet</p>
+    </div>
+    <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-[#0D402D] uppercase tracking-wider">RESTAURANT MENU</h2>
+        <div class="w-24 h-1 bg-[#0D402D] mx-auto mt-3"></div>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <a href="" class="block">
+            <div class="bg-white rounded-lg border-2 border-[#0D402D] overflow-hidden transition-shadow">
+                <div class="aspect-square bg-gray-200 flex items-center justify-center">
+                    <img src="static/images/bg-1.png" alt="Nasi Goreng" class="w-full h-full object-cover">
+                </div>
+                <div class="p-4 text-center border-t-2 border-[#0D402D]">
+                    <h3 class="font-semibold text-gray-800 text-lg">Mie Goreng Spesial</h3>
+                </div>
+            </div>
+        </a>
+
+        <a href="" class="block">
+            <div class="bg-white rounded-lg border-2 border-[#0D402D] overflow-hidden transition-shadow">
+                <div class="aspect-square bg-gray-200 flex items-center justify-center">
+                    <img src="/static/images/bg-2.png" alt="Burger" class="w-full h-full object-cover">
+                </div>
+                <div class="p-4 text-center border-t-2 border-[#0D402D]">
+                    <h3 class="font-semibold text-gray-800 text-lg">Ayam goreng</h3>
+                </div>
+            </div>
+        </a>
+
+        <a href="" class="block">
+            <div class="bg-white rounded-lg border-2 border-[#0D402D] overflow-hidden transition-shadow">
+                <div class="aspect-square bg-gray-200 flex items-center justify-center">
+                    <img src="/static/images/bg-3.png" alt="Pizza" class="w-full h-full object-cover">
+                </div>
+                <div class="p-4 text-center border-t-2 border-[#0D402D]">
+                    <h3 class="font-semibold text-gray-800 text-lg">apa ini gatau</h3>
+                </div>
+            </div>
+        </a>
+
+        <a href="" class="block">
+            <div class="bg-white rounded-lg border-2 border-[#0D402D] overflow-hidden transition-shadow">
+                <div class="aspect-square bg-gray-200 flex items-center justify-center">
+                    <img src="/static/images/food1.jpg" alt="Pasta" class="w-full h-full object-cover">
+                </div>
+                <div class="p-4 text-center border-t-2 border-[#0D402D] hover: ">
+                    <h3 class="font-semibold text-gray-800 text-lg">Pizza Margherita</h3>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}
