@@ -2,14 +2,27 @@
 {% block content %}
 <div class="max-w-7xl mx-auto bg-white rounded-lg shadow-lg p-8 font-[Montserrat]">
     <div class="bg-gradient-to-r from-[#0D402D] to-[#165a42] rounded-lg p-16 mb-12 shadow-md">
-        <h1 class="text-5xl font-bold text-white">Welcome</h1>
-        <p class="text-white/80 mt-2">lorem ipsum dolor sir amet</p>
+        <h1 class="text-5xl font-bold text-white">Selamat Datang</h1>
+        <p class="text-white/80 mt-2">Pantau data food waste secara cepat</p>
     </div>
-    <div class="text-center mb-10">
-        <h2 class="text-3xl font-bold text-[#0D402D] uppercase tracking-wider">RESTAURANT MENU</h2>
-        <div class="w-24 h-1 bg-[#0D402D] mx-auto mt-3"></div>
+    <div class="mb-10">
+        <h2 class="text-3xl font-bold text-[#0D402D] uppercase tracking-wider">Pantau Food Waste</h2>
+        <div class="w-24 h-1 bg-[#0D402D] mt-3">
+
+        </div>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="flex flex-col xl:flex-row w-full h-full">
+        <div class="flex flex-wrap justify-center xl:justify-start gap-7 w-full h-fit" id="dashboard">
+
+        </div>
+        <div class="flex flex-wrap gap-8 mt-7 xl:mt-0 xl:gap-12.5 w-full xl:w-[40%] h-full bg-[#165A42] rounded-2xl px-6 py-5">
+            <h3 class="self-end font-bold text-4xl text-white">Food Waste Terlaris</h3>
+            <div class="flex flex-col gap-5 w-full h-fit" id="leaderbord">
+                
+            </div>
+        </div>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
         <a href="" class="block">
             <div class="bg-white rounded-lg border-2 border-[#0D402D] overflow-hidden transition-shadow">
                 <div class="aspect-square bg-gray-200 flex items-center justify-center">
@@ -55,4 +68,5 @@
         </a>
     </div>
 </div>
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
 {% endblock %}

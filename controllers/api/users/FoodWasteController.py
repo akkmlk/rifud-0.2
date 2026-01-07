@@ -3,7 +3,7 @@ import os
 from uuid import uuid4
 from werkzeug.utils import secure_filename
 from utils.res_wrapper import success_response, error_response
-from models.food_waste import get_food_waste_filter, get_all_food_waste, get_food_waste_resto_filter, get_one_food_waste, insert_food_waste, put_update_food_waste, del_food_waste
+from models.food_waste import get_food_waste_filter, get_all_food_waste, get_food_waste_resto_filter, get_one_food_waste, insert_food_waste, put_update_food_waste, del_food_waste, get_most_stock, get_least_stock, get_sum_edible, get_sum_waste, get_best_selling
 
 UPLOAD_FOLDER = 'static/uploads/food_waste'
 
@@ -132,6 +132,61 @@ def delete_food_waste(id):
                 os.remove(foto_path)
 
         return success_response("Hapus berhasil", data=food_waste)
+    except Exception as e:
+        print(e)
+        return error_response(message="Internal server error", res_code=500)
+
+def most_stock(id):
+    try:
+        most_stock = get_most_stock(id)
+        if not most_stock:
+            return error_response("Data tidak tersediaaaaa", res_code=404)
+
+        return success_response(data=most_stock)
+    except Exception as e:
+        print(e)
+        return error_response(message="Internal server error", res_code=500)
+
+def least_stock(id):
+    try:
+        least_stock = get_least_stock(id)
+        if not least_stock:
+            return error_response("Data tidak tersediaaaaa", res_code=404)
+
+        return success_response(data=least_stock)
+    except Exception as e:
+        print(e)
+        return error_response(message="Internal server error", res_code=500)
+
+def sum_edible(id):
+    try:
+        sum_edible = get_sum_edible(id)
+        if not sum_edible:
+            return error_response("Data tidak tersediaaaaa", res_code=404)
+
+        return success_response(data=sum_edible)
+    except Exception as e:
+        print(e)
+        return error_response(message="Internal server error", res_code=500)
+
+def sum_waste(id):
+    try:
+        sum_waste = get_sum_waste(id)
+        if not sum_waste:
+            return error_response("Data tidak tersediaaaaa", res_code=404)
+
+        return success_response(data=sum_waste)
+    except Exception as e:
+        print(e)
+        return error_response(message="Internal server error", res_code=500)
+
+def best_selling(id):
+    try:
+        best_selling = get_best_selling(id)
+        if not best_selling:
+            return error_response("Data tidak tersediaaaaa", res_code=404)
+
+        return success_response(data=best_selling)
     except Exception as e:
         print(e)
         return error_response(message="Internal server error", res_code=500)

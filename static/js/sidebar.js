@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const currentPath = window.location.pathname;
     const menuLinks = document.querySelectorAll('aside ul li a');
+    const btnLogoutSidebar = document.getElementById('btnLogoutSidebar')
 
     menuLinks.forEach(link => {
         const href = link.getAttribute('href');
@@ -22,4 +23,25 @@ document.addEventListener('DOMContentLoaded', () => {
             link.removeAttribute('aria-current');
         }
     });
+
+    btnLogoutSidebar.addEventListener('click', async (e) => {
+        e.preventDefault()
+
+        try {
+            const res = await fetch('/api/logout', {
+                method: 'POST',
+                credentials: 'include'
+            })
+
+            if (res.ok) {
+                sessionStorage.clear()
+                localStorage.clear()
+                window.location.href = '/'
+            } else {
+                alert('Logout gagal')
+            }
+        } catch (err) {
+            console.error('Logout error:', err)
+        }
+    })
 })

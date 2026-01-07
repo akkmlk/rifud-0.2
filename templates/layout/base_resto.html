@@ -6,13 +6,15 @@
     <title>Dashboard Resto</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link href="{{url_for('static',filename='dist/output.css')}}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body class="bg-[#F2E1D1]">
     <header>
         {% include "components/navbar.html" %}
     </header>
     <main class="flex h-[calc(100vh-4rem)]">
-        <div class="h-full">
+        <div class="h-full fixed top-0 left-0 z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out md:relative" id="div-sidebar">
             {% include "components/sidebar.html" %}
         </div>
         <div class="flex-1 overflow-y-auto p-6">
@@ -23,6 +25,14 @@
     {% include "components/footer.html" %}
 
     <script src="{{ url_for('static', filename='js/base_resto.js') }}"></script>
+    <script>
+        const btnHamburger = document.getElementById('btn-hamburger');
+        const sidebar = document.getElementById('div-sidebar');
+
+        btnHamburger.addEventListener('click', () => {
+            sidebar.classList.toggle("-translate-x-full")
+        })
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </body>

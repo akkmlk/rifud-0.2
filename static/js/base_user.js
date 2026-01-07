@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lokasi: '',
         tipe: ''
     };
-
+    let allLocations = [];
     // Ambil data dropdown dari API dan isi dropdown
     async function populateDropdowns() {
         try {
@@ -254,9 +254,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('cancelOrder').onclick = () => foodModal.hide();
         document.getElementById('tutupButton').onclick = () => foodModal.hide();
+        const confirmBtn = document.getElementById('confirmOrder')
 
-        document.getElementById('confirmOrder').addEventListener('click', async () => {
+        confirmBtn.onclick = async () => {
             const paymentMethod = document.getElementById('addPaymentMethod').value;
+
             if (!paymentMethod) {
                 alert('Pilih metode pembayaran terlebih dahulu');
                 return;
@@ -266,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 qty: currentOrder.quantity,
                 price: currentOrder.item.price,
                 payment_type: paymentMethod,
-                user_id: sessionStorage.getItem('user_id'),     // inject dari Jinja
+                user_id: sessionStorage.getItem('user_id'),
                 food_waste_id: selectedFoodWasteId
             };
 
@@ -289,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error(err);
                 alert('Terjadi kesalahan');
             }
-        })
+        };
 
 
         foodModal.show();
@@ -330,14 +332,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('lokasi').addEventListener('change', (e) => {
             filters.lokasi = e.target.value;
             applyFilters();
-            applyFiltersToMap();
+            applyFiltersToMapAndList();
         });
 
         // Event listener untuk select tipe
         document.getElementById('type').addEventListener('change', (e) => {
             filters.tipe = e.target.value;
             applyFilters();
-            applyFiltersToMap();
+            applyFiltersToMapAndList();
         });
 
     }
@@ -365,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    let locations = [];
+    let markers = {};
 
     // Ambil data dari API
     async function fetchLocations() {
@@ -374,17 +376,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const json = await response.json();
 
             if (json.status === 'success' && json.data) {
-                locations = json.data; // Ambil dari json.data
+                allLocations = json.data; // Ambil dari json.data
             } else {
                 console.error("Gagal mengambil data lokasi:", json);
-                locations = []; // Pastikan locations kosong jika gagal
+                allLocations = []; // Pastikan locations kosong jika gagal
             }
 
-            renderList(locations);
-            addMarkersToMap();
+            renderList(allLocations);
+            addMarkersToMap(allLocations);
         } catch (error) {
             console.error("Gagal mengambil data lokasi:", error);
-            locations = []; // Jaga-jaga jika error
+
         }
     }
 
@@ -399,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    const markers = {};
+
 
     // custom icon (optional) — simple colored circle icon
     const icon = L.icon({
@@ -415,7 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // add markers to map
-    function addMarkersToMap() {
+    function addMarkersToMap(locations) {
         locations.forEach(loc => {
 
             const popupContent = `
@@ -533,12 +535,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const v = q.value.trim().toLowerCase();
 
         if (!v) {
-            renderList(locations);
+            renderList(allLocations);
             for (const id in markers) markers[id].addTo(map);
             return;
         }
 
-        const filtered = locations.filter(l =>
+        const filtered = allLocations.filter(l =>
             (l.name + ' ' + l.address).toLowerCase().includes(v)
         );
 
@@ -563,55 +565,44 @@ document.addEventListener('DOMContentLoaded', () => {
        User location (watchPosition). Browser will prompt for permission.
        NOTE: geolocation requires https (or localhost).
        ========================= */
-    let userMarker = null;
-    let userCircle = null;
+
     // Ganti ID ini agar tidak bentrok
     const locationStatus = document.getElementById('location-status');
 
-    if ('geolocation' in navigator) {
-        const opts = { enableHighAccuracy: true, maximumAge: 10000, timeout: 10000 };
+    const locateControl = L.control.locate({
+        position: 'topleft',
+        flyTo: true,
+        keepCurrentZoomLevel: false,
+        drawCircle: true,
+        drawMarker: true,
+        showPopup: true,
+        setView: 'untilPan',
+        watch: true,
+        enableHighAccuracy: true,
+        icon: '	leaflet-control-locate-location-arrow',
+        locateOptions: {
+            maxZoom: 16,
+            timeout: 10000,
+            maximumAge: 10000
+        },
+        strings: {
+            title: "Lokasi Saya",
+            popup: "Kamu di sini"
+        }
+    }).addTo(map);
 
-        const success = pos => {
-            const lat = pos.coords.latitude;
-            const lng = pos.coords.longitude;
-            const acc = pos.coords.accuracy; // meters
 
-            // Ganti juga di sini
-            locationStatus.textContent = `Kamu: ${lat.toFixed(5)}, ${lng.toFixed(5)} (akurat ±${Math.round(acc)} m)`;
+    map.on('locationfound', e => {
+        const lat = e.latitude;
+        const lng = e.longitude;
+        const acc = e.accuracy;
 
-            if (!userMarker) {
-                userMarker = L.marker([lat, lng], {
-                    // simple blue circle marker
-                    icon: L.icon({
-                        iconUrl: 'data:image/svg+xml;utf8,' + encodeURIComponent(
-                            `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" fill="#2b8cff" stroke="#1a6fe8" stroke-width="1.5"/>
-                </svg>`
-                        ),
-                        iconSize: [28, 28], iconAnchor: [14, 14]
-                    })
-                }).addTo(map).bindPopup('Kamu di sini');
-                userCircle = L.circle([lat, lng], { radius: acc, color: '#2b8cff', weight: 1, fillOpacity: 0.08 }).addTo(map);
-                map.setView([lat, lng], 14);
-                userMarker.openPopup();
-            } else {
-                userMarker.setLatLng([lat, lng]);
-                userCircle.setLatLng([lat, lng]).setRadius(acc);
-            }
-        };
-
-        const error = err => {
-            // Ganti juga di sini
-            locationStatus.textContent = `Gagal ambil lokasi: ${err.message}`;
-        };
-
-        // start watching position
-        navigator.geolocation.watchPosition(success, error, opts);
-
-    } else {
-        // Ganti juga di sini
-        locationStatus.textContent = 'Geolocation tidak tersedia di browser ini.';
-    }
+        locationStatus.textContent =
+            `Kamu: ${lat.toFixed(5)}, ${lng.toFixed(5)} (±${Math.round(acc)} m)`;
+    });
+    map.on('locationerror', e => {
+        locationStatus.textContent = `Gagal ambil lokasi: ${e.message}`;
+    });
 
     /* =========================
        Small helper

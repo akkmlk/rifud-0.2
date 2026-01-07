@@ -162,3 +162,74 @@ def del_food_waste(id):
     mysql.connection.commit()
     cur.close()
     return food_waste
+
+def get_most_stock(id):
+    cur = mysql.connection.cursor(DictCursor)
+    cur.execute("SELECT name, stock FROM food_waste WHERE user_id = %s ORDER BY stock DESC LIMIT 1", (id, ))
+    food_waste = cur.fetchone()
+    cur.close()
+
+    if not food_waste:
+        return None
+    
+    return food_waste
+
+def get_least_stock(id):
+    cur = mysql.connection.cursor(DictCursor)
+    cur.execute("SELECT name, stock FROM food_waste WHERE user_id = %s ORDER BY stock ASC LIMIT 1", (id, ))
+    food_waste = cur.fetchone()
+    cur.close()
+
+    if not food_waste:
+        return None
+    
+    return food_waste
+
+def get_sum_edible(id):
+    cur = mysql.connection.cursor(DictCursor)
+    cur.execute("SELECT COUNT(*) AS total_edible FROM food_waste WHERE user_id = %s AND type = %s", (id, "edible"))
+    food_waste = cur.fetchone()
+    cur.close()
+
+    if not food_waste:
+        return None
+    
+    return food_waste
+
+def get_sum_waste(id):
+    cur = mysql.connection.cursor(DictCursor)
+    cur.execute("SELECT COUNT(*) AS total_waste FROM food_waste WHERE user_id = %s AND type = %s", (id, "waste"))
+    food_waste = cur.fetchone()
+    cur.close()
+
+    if not food_waste:
+        return None
+    
+    return food_waste
+
+def get_best_selling(id):
+    cur = mysql.connection.cursor(DictCursor)
+    cur.execute("""
+            SELECT 
+                ROW_NUMBER() OVER (ORDER BY total_transaction DESC) AS no,
+                name,
+                total_transaction
+            FROM (
+                SELECT 
+                    food_waste.name,
+                    COUNT(*) AS total_transaction
+                FROM transactions
+                JOIN food_waste ON transactions.food_waste_id = food_waste.id
+                WHERE food_waste.user_id = %s
+                GROUP BY food_waste.id, food_waste.name
+            ) t
+            ORDER BY total_transaction DESC
+            LIMIT 10
+        """, (id,))
+    food_waste = cur.fetchall()
+    cur.close()
+
+    if not food_waste:
+        return None
+    
+    return food_waste

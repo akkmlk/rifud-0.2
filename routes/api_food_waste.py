@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from utils.res_wrapper import success_response, error_response
 from controllers.api.users.UserController import profile_user, available_city, your_order, transactions_history, login_proccess, logout_proccess, resto_registration_proccess, user_registration_proccess, transaction, order_history, order, edit_profile_user, update_transaction_status_controller, invoice, payment_qris
-from controllers.api.users.FoodWasteController import food_waste_filter, all_food_waste, food_waste_resto_filter, one_food_waste, add_food_waste, update_food_waste, delete_food_waste
+from controllers.api.users.FoodWasteController import food_waste_filter, all_food_waste, food_waste_resto_filter, one_food_waste, add_food_waste, update_food_waste, delete_food_waste, most_stock, least_stock, sum_edible, sum_waste, best_selling
 
 food_waste_api = Blueprint("food_waste_api", __name__)
 
@@ -94,3 +94,23 @@ def put_payment_qris(transaction_id):
 @food_waste_api.route('/api/transaction-update/<int:id>', methods=['PUT'])
 def update_transaction_status(id):
     return update_transaction_status_controller(id)
+
+@food_waste_api.route('/api/most-stock/<int:resto_id>', methods=['GET'])
+def get_most_stock(resto_id):
+    return most_stock(resto_id)
+
+@food_waste_api.route('/api/least-stock/<int:resto_id>', methods=['GET'])
+def get_least_stock(resto_id):
+    return least_stock(resto_id)
+
+@food_waste_api.route('/api/sum-edible/<int:resto_id>', methods=['GET'])
+def get_sum_edible(resto_id):
+    return sum_edible(resto_id)
+
+@food_waste_api.route('/api/sum-waste/<int:resto_id>', methods=['GET'])
+def get_sum_waste(resto_id):
+    return sum_waste(resto_id)
+
+@food_waste_api.route('/api/best-selling/<int:resto_id>', methods=['GET'])
+def get_best_selling(resto_id):
+    return best_selling(resto_id)
